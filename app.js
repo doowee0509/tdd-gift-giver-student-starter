@@ -1,6 +1,7 @@
 const express = require("express")
 const morgan = require("morgan")
 const giftRouter = require("./routes/gift-exchange")
+const quizRouter = require("./routes/quiz")
 const { NotFoundError } = require("./utils/errors")
 
 const app = express()
@@ -8,9 +9,10 @@ const app = express()
 app.use(morgan("tiny"))
 app.use(express.json())
 app.use("/gift-exchange", giftRouter)
+app.use("/quiz", quizRouter)
 
 app.get("/", (req,res) => {
-    res.status(200).json({ping: "pong"})
+    res.status(200).json({"ping": "pong"})
 })
 
 app.use((req, res, next) => {
@@ -25,8 +27,5 @@ app.use((error, req, res, next) => {
         error: { message, status },
     })
 })
-
-
-
 
 module.exports = app 

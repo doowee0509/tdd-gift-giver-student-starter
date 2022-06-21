@@ -1,6 +1,87 @@
 const { BadRequestError } = require("../utils/errors")
 
+const quiz = [
+    {
+        question: "question #1",
+        answerChoices: [
+            "a. first answer choice",
+            "b. second answer choice",
+            "c. third answer choice",
+            "d. fourth answer choice",
+        ],
+    },
+    {
+        question: "question #2",
+        answerChoices: [
+            "a. first answer choice",
+            "b. second answer choice",
+            "c. third answer choice",
+            "d. fourth answer choice",
+        ],
+    },
+    {
+        question: "question #3",
+        answerChoices: [
+            "a. first answer choice",
+            "b. second answer choice",
+            "c. third answer choice",
+            "d. fourth answer choice",
+        ],
+    },
+    {
+        question: "question #4",
+        answerChoices: [
+            "a. first answer choice",
+            "b. second answer choice",
+            "c. third answer choice",
+            "d. fourth answer choice",
+        ],
+    },
+    {
+        question: "question #5",
+        answerChoices: [
+            "a. first answer choice",
+            "b. second answer choice",
+            "c. third answer choice",
+            "d. fourth answer choice",
+        ],
+    },
+]
+
+const pointsLookUp = [
+    {
+        a: 2,
+        b: 3,
+        c: 1,
+        d: 0,
+    },
+    {
+        a: 1,
+        b: 2,
+        c: 3,
+        d: 0,
+    },
+    {
+        a: 0,
+        b: 1,
+        c: 3,
+        d: 2,
+    },
+    {
+        a: 1,
+        b: 3,
+        c: 2,
+        d: 0,
+    },
+    {
+        a: 3,
+        b: 2,
+        c: 1,
+        d: 0,
+    },
+]
 class GiftExchange{
+
     static pairs(names){
         if (names.length % 2) {
             throw new BadRequestError("The number of names provided cannot be odd.")
@@ -40,6 +121,28 @@ class GiftExchange{
         }
 
         return pairs
+    }
+
+    static async quiz(){
+        return quiz
+    }
+
+    static async quizResults(answers) {
+        let totalPoints = 0
+
+        answers.forEach((answer, index) => {
+            if (!pointsLookUp[index][answer] && pointsLookUp[index][answer] !== 0) {
+                throw new BadRequestError("One or more of your answer choices was not listed. Try again!")
+            }
+            totalPoints += pointsLookUp[index][answer]
+        })
+
+        if (totalPoints < 4)return "personal care"
+        if (totalPoints >= 4 && totalPoints < 8)return "clothing"
+        if (totalPoints >= 8 && totalPoints < 12)return "accessories"
+        if (totalPoints >= 12 && totalPoints < 16)return "home products"
+        if (totalPoints >= 16 && totalPoints < 20)return "consumables"
+        if (totalPoints >= 20)return "technology"
     }
 }
 
